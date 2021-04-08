@@ -1,0 +1,18 @@
+<div class="pos-f-t">
+        <nav class="navbar navbar-light navbar-static-top bg-faded">
+            <div class="no-nav-header">
+                <div class="container-fluid">
+                    <img class="pwc-logo" src="${basePath}/static/custom/PwC_logo.png">
+                    <a class="navbar-brand" id="logo-container" href="#">Denali Cloud Estimator</a>
+                   <div id="headerMenu">
+                        <ul id="nav-account" class="nav navbar-nav navbar-right">
+			                <li><a href="#">${loggedinuser}</a></li>
+			                <li>
+			                <a href="<c:url value="/logout" />">Logout</a>
+			                </li>
+			            </ul>
+                    </div> 
+                </div>
+            </div>
+        </nav>
+</div>

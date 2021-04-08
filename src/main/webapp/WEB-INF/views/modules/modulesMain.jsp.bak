@@ -1,0 +1,70 @@
+<div class="panel panel-default" ng-controller="engagementModulesController">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse" role="tab" id="ModuleHeadingTree" href="#ModuleList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>Modules </a>
+		</h4>
+	</div>
+	<div id="ModuleList" class="panel-collapse accordion-body collapse in" role="tabpanel" aria-labelledby="ModuleHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class="table table-bordered table-sm table-striped table-hover no-footer dataTable">
+				<thead>
+					<tr>
+						<td ><strong>Business Process</strong></td>
+						<td ><strong>Modules</strong></td>
+						<td  style="width:40px;"><strong>Abbr.</strong></td>
+						<td ><strong>Module Duration Factor</strong></td>
+						<td ><strong>Module Weightage</strong></td>
+						<td  style="width:60px;"><strong>DDC Supported</strong></td>
+						<td  style="width:60px;"><strong>In Scope</strong></td>
+						<td  style="width:60px;"><strong>Complexity Factor</strong></td>
+						<td ><strong># of Requirement</strong></td>
+						<td ><strong># of Gaps</strong></td>
+					</tr>
+					 <tr>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th></th>
+					 	<th>Job Aids</th>
+					 	<th>Workshop Hr</th>
+					 	<th>Onsite Effort</th>
+					 	<th>DDC Effort</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="module in modules">
+						<td ng-bind="module.businessProcessName"></td>
+						<td ng-bind="module.module_name"></td>
+						<td ng-bind="module.module_abbreviation"></td>
+						<td ng-bind="module.module_duration_factor"></td>
+						<td ng-bind="module.moduleweightage"></td>
+					<!-- 	<input  class="form-control" name="" ng-model="module.module_duration_factor" />
+						<input  class="form-control" name="" ng-model="module.moduleweightage" />
+						 -->
+						<td ng-bind="module.ddc_supported_flag"></td>
+						<td><select class="form-control" ng-model="module.is_in_scope_flag" ng-change="calculateInScopeTotal(this)">
+								<option ng-repeat="x in YN" ng-selected="module.is_in_scope_flag==x">{{x}}</option>
+						</select></td>
+						<td><input type="number" min="0.0" class="form-control" name="" ng-model="module.complexity_factor" /></td>
+						<td><input type="number" min="0.0" numeric-only class="form-control" name="" ng-model="module.number_of_requirements" /></td>
+						<td><input type="number" min="0.0" numeric-only class="form-control" name="" ng-model="module.number_of_gaps" /></td>
+						<td><input type="number" min="0.0" numeric-only class="form-control" name="" ng-model="module.number_of_gaps" /></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right;border-right: 0px;"><strong>Grand Total Number of Modules in Scope:</strong></td>
+						<td colspan="" style="text-align: left; border-left: 0px;border-right: 0px;">{{totalModulesInScope}}</td>
+						<td colspan="2" style="border-right: 0px; border-left: 0px;"></td>
+						<td colspan="" align="left" style="border-left: 0px;"><input type="button" class="btn btn-primary btn-save" value="&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;" ng-click="saveModules(modules)" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

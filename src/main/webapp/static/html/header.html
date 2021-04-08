@@ -1,0 +1,30 @@
+<div class="pos-f-t">
+        <nav class="navbar navbar-light navbar-static-top bg-faded">
+            <div class="no-nav-header">
+                <div class="container-fluid">
+                   	 <a class="glyphicon glyphicon-align-justify menu-icon" href="" ng-click="toggle()"></a>
+<!--                    	 <span class="glyphicon glyphicon-menu-hamburgers"  ng-click="toggle()" aria-hidden="true">Menu</span> -->
+                    <img class="pwc-logo" src="${basePath}/static/custom/PwC_logo.png">
+                    <a class="navbar-brand" id="logo-container" href="${basePath}/">Denali Cloud Estimator</a>
+                   <div id="headerMenu">
+                   		<ul ng-show="fromAdmin" id="nav-account" class="nav navbar-nav navbar-right">
+                   			<li><div class="middle"><a>{{headerDisplay}}</span></a></li>
+                   			<li><button ng-click="closeWindow()" style="margin-top: 8px;margin-right: 10px;" class="btn btn-primary" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close</button></li>
+                   		</ul>
+                        <ul ng-show="!fromAdmin" id="nav-account" class="nav navbar-nav navbar-right">
+<!--                             <li><a href="#"><b>Project : {{$rootScope.currentProjectId}}  |  Engagement Name : {{$rootScope.projectDetails.engagement_name}}  |  Version : {{$rootScope.projectDetails.version}}</b></a></li> -->
+			                
+			                <li><a href="#">{{headerDisplay}}</a></li>
+			                <li><a href="#">{{loggedinuser}}</a></li>
+			                <li>
+			                <a href="<c:url value="/logoutBefore" />">Logout</a>
+			                </li>
+			            </ul>
+			            <ul ng-show="!fromAdmin" ng-if="headerDisplay !='' " id="nav-account" style="padding-top: 9px;" class="nav navbar-nav navbar-right">
+                   			<li><button type="button" class="btn btn-primary" ng-click="calculateSummaryAll()">Calculate / Refresh Summary</button></li>
+                   		</ul>
+                    </div> 
+                </div>
+            </div>
+        </nav>
+</div>

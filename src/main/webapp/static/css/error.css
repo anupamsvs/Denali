@@ -1,0 +1,45 @@
+.error-container{
+	width: 400px;
+    margin: 0 auto;
+    height: 500px;
+    padding-top: 15vh;
+    text-align: center;
+    color: #3f4040;
+    font-family: arial;
+    font-weight:bold;
+}
+
+.error-container .error-type{
+	    font-size: 100px;
+}
+
+.error-container .error-type-discription{
+	font-size: 21px;
+	line-height: 40px;
+}	
+
+.error-container .error-direction{
+	display: block;
+    font-weight: normal;
+    font-size: 17px;
+	
+}
+
+.error-container .error-links{
+	display: block;
+    text-decoration: none;
+    padding: 10px 0;
+    width: 150px;
+    background: #ddd;
+    margin: 10px auto;
+    color:#3f4040;
+}
+
+
+.error-container .error-links:active{
+	box-shadow: inset 0 5px 9px rgba(0,0,0,0.1);
+}
+
+.error-container .error-links:hover{
+	background: #ccc;
+}

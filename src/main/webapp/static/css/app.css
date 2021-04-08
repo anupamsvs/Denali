@@ -1,0 +1,159 @@
+html{
+
+}
+
+body{
+	height: 100%;
+    padding-top: 15vh;
+	background-color:rgb(245, 245, 245);
+	
+	background: url(../custom/bg10242.jpg);
+    background-size: cover;
+}
+
+
+#mainWrapper {
+
+
+);
+
+}
+
+.floatRight{
+	float:right;
+	margin-right: 18px;
+}
+
+.has-error{
+	color:red;
+}
+
+.generic-container {
+  position:fixed;
+  width:80%;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #EAE7E7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 30px black;
+}
+
+.custom-width {
+    width: 80px !important;
+}
+
+body, #mainWrapper, .form-control{
+	font-size:12px!important;
+}
+
+#mainWrapper {
+	/*height: 720px; Without explicit px values, % in children's does not work*/
+	
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:10px;
+}
+
+.login-container {
+    min-width: 350px;
+    width: 40%;
+    margin: 0 auto;
+/*      background-color: #dedee0;
+    box-shadow:5px 6px 15px 2px rgba(0, 0, 0, 0.2) */
+}
+
+.login-card {
+    width: 80%;
+    margin: auto;
+}
+
+.login-form {
+    padding: 10%;
+
+}
+
+.authbar{
+	margin-bottom:15px;
+}
+
+.login-header{
+	font-size:14px;
+	margin: 5% auto;
+    width: 50%;
+    text-align: center;
+/*     color: rgba(0,0,0,0.6);
+    text-shadow: 1px 1px 1px white; */
+    
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 1px #cacaca
+}
+
+.login-form .input-group-addon{
+	background:#fff;
+}
+
+.login-form input:focus{
+	    box-shadow: inset 0 0 5px 1px #ddd;
+    background: rgba(255,255,255,1);
+    border-color:#ccc;
+}
+
+.login-form input[type="submit"]{
+/* 	border-radius: 0; */
+    background: #e37252;
+    border: 0;
+}
+
+.login-form input[type="submit"]:focus{
+	outline: 0;
+    box-shadow: 0 0 0 0;
+}
+
+.login-form input[type="submit"]:active{
+	    background: #c36348;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, .125);
+}
+
+.login-form input[type="submit"]:hover{
+	background: #c36348;
+}
+
+.login-form .alert{
+	padding: 10px;
+    margin-bottom: 10px;
+}
+
+.login-form .input-group{
+	padding-left:0;
+	padding-right:0;
+}
+
+.login-form .input-group:nth-child(2){
+	margin-bottom: 20px;
+}
+
+.login-logo-group{
+	    padding: 20px 0;
+	    text-align: center;
+}
+
+.login-logo-group>img{
+	
+}
+
+.login-logo-group>span{
+	    color: white;
+    font-size: 23px;
+    font-family: georgia;
+    font-weight: bold;
+    font-style: italic;
+    position: relative;
+    top: 16px;
+}
+button.close {
+        color: #a32020 !important;
+    opacity: 1;
+}

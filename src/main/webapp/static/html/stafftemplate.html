@@ -1,0 +1,235 @@
+
+<div class="panel panel-default" ng-init="initMe()">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>Effort Percentage </a>
+		</h4>
+		<button class='btn btn-primary pull-right' ng-click='saveEfforts(data)'>Save</button>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th>WorkStream</th>
+						<th>On Shore</th>
+						<th>Off Shore</th>
+						<th>Offshore Landed</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-id="{{type}}_{{effort.id}}" ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<input type='hidden' name='id[]' ng-model="effort.workstream" />
+						<td><input data-effortid="{{type}}_offsite_{{effort.id}}" type='number' min="0" max="100" ng-change="cal_sum('{{type}}_sum-row-{{effort.id}}','')"
+							class='text-center form-control' id="{{type}}_{{'onsite_'+effort.id}}" name='onshore[]'
+							ng-model="scopeeffort[effort.id].onsite" ng-value="{{data.efforts[type]['onsite_'+effort.id].work_value}}"   /></td>
+						<td><input type='number' min="0" max="100" ng-change="cal_sum('{{type}}_sum-row-{{effort.id}}','')"
+							class='text-center form-control'  name='offshore[]' data-effortid="{{type}}_offsite_{{effort.id}}"
+							ng-model="scopeeffort[effort.id].offsite" id="{{type+'_offsite_'+effort.id}}" ng-value="{{data.efforts[type]['offsite_'+effort.id].work_value}}" /></td>
+						<td><input type='number' min="0" max="100" ng-change="cal_sum('{{type}}_sum-row-{{effort.id}}','')"
+							class='text-center form-control' name='landed[]' data-effortid="{{type}}_offshore_{{effort.id}}"
+							ng-model="scopeeffort[effort.id].offshore" id="{{type}}_{{'offshorelanded_'+effort.id}}" ng-value="{{data.efforts[type]['offshore_'+effort.id].work_value}}" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>Team Structure </a>
+		</h4>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="{{data.extras_onsite.levels.length}}">OnShore</th>
+						<th colspan="{{data.extras_offsite.levels.length - 1}}">Offshore</th>
+					</tr>
+					<tr>
+						<th >WorkStream</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_onsite.levels">{{level.code}}</th>
+						<th data-level='{{level.id}}' ng-show="level.id != 55" ng-repeat="level in data.extras_offsite.levels">{{level.code}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="{{type}}-input-row {{type}}_sum-row-{{effort.id}}" data-calclass="{{type}}_sum-row-{{effort.id}}" ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<td data-level-onsite='{{level.id}}' class="form_control" ng-repeat="level in data.extras_onsite.levels"><input data-teamid="{{type}}_onsite_{{effort.id}}_{{level.id}}_{{data.team[type]['offsite_'+effort.id+'_'+level.id].id}}" class="text-center form-control {{type}}_onsite_row" ng-change="cal_sum('{{type}}_sum-row-{{effort.id}}',{{type}}_onsite_effort.id+'_'+level.id)" type='number' min=0 max="100" step="1" name='' id="{{type}}_onsite_{{effort.id}}_{{level.id}}" ng-model="scopeTeam['onsite_'+effort.id+'_'+level.id]" ng-value="{{data.team[type]['onsite_'+effort.id+'_'+level.id].team_value}}" /></td>
+						<td data-level-offsite='{{level.id}}' class="form_control"  ng-show="level.id != 55" ng-repeat="level in data.extras_offsite.levels"><input data-teamid="{{type}}_offsite_{{effort.id}}_{{level.id}}_{{data.team[type]['offsite_'+effort.id+'_'+level.id].id}}"  class="text-center form-control {{type}}_offsite_row"  ng-change="cal_sum('{{type}}_sum-row-{{effort.id}}',{{type}}_offsite_effort.id+'_'+level.id)" type='number' min=0 max="100" step="1" id="{{type}}_offsite_{{effort.id}}_{{level.id}}" name='' ng-model="scopeTeam['offshore_'+effort.id+'_'+level.id]" ng-value="{{data.team[type]['offsite_'+effort.id+'_'+level.id].team_value}}" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>Team Structure </a>
+		</h4>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="{{data.extras_onsite.levels.length}}">OnShore</th>
+						<th colspan="{{data.extras_offsite.levels.length}}">Offshore</th>
+					</tr>
+					<tr>
+						<th >WorkStream</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_onsite.levels">{{level.code}}</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_offsite.levels">{{level.code}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<td class="form_control" ng-repeat="level in data.extras_onsite.levels"><Label  id="percentage_{{type}}_onsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ng-repeat="level in data.extras_offsite.levels"><Label id="percentage_{{type}}_offsite_{{effort.id}}_{{level.id}}"></Label></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>CSP Rates</a>
+		</h4>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="{{data.extras_onsite.levels.length}}">OnShore</th>
+						<th colspan="{{data.extras_offsite.levels.length}}">Offshore</th>
+					</tr>
+					<tr>
+						<th >WorkStream</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_onsite.levels">{{level.code}}</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_offsite.levels">{{level.code}}</th>
+						<th>Blended Rate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<td class="form_control" ng-repeat="level in data.extras_onsite.levels"><Label  id="csp_{{type}}_onsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ng-repeat="level in data.extras_offsite.levels"><Label id="csp_{{type}}_offsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ><Label id="{{type}}_blended_csp_{{effort.id}}"></Label></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>RSR Rates</a>
+		</h4>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="{{data.extras_onsite.levels.length}}">OnShore</th>
+						<th colspan="{{data.extras_offsite.levels.length}}">Offshore</th>
+					</tr>
+					<tr>
+						<th >WorkStream</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_onsite.levels">{{level.code}}</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_offsite.levels">{{level.code}}</th>
+						<th>Blended Rate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<td class="form_control" ng-repeat="level in data.extras_onsite.levels"><Label  id="rsr_{{type}}_onsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ng-repeat="level in data.extras_offsite.levels"><Label id="rsr_{{type}}_offsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ><Label id="{{type}}_blended_rsr_{{effort.id}}"></Label></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading accordion-toggle" data-toggle="collapse"
+		role="tab" id="pwcResponsibilityUnderHeadingTree"
+		href="#pwcResponsibilityUnderList">
+		<h4 class="panel-title dashboard_box_title">
+			<a>Margin Rates</a>
+		</h4>
+	</div>
+	<div id="teamStructure"
+		class="panel-collapse accordion-body collapse in" role="tabpanel"
+		aria-labelledby="pwcResponsibilityUnderHeadingTree">
+		<div class="page_box_content accordion-inner">
+			<table class='table table-bordered table-striped'>
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="{{data.extras_onsite.levels.length}}">OnShore</th>
+						<th colspan="{{data.extras_offsite.levels.length}}">Offshore</th>
+						
+					</tr>
+					<tr>
+						<th >WorkStream</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_onsite.levels">{{level.code}}</th>
+						<th data-level='{{level.id}}' ng-repeat="level in data.extras_offsite.levels">{{level.code}}</th>
+						<th>Blended Rate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="effort in data.extras_onsite.workstream track by $index">
+						<td>{{effort.code}}</td>
+						<td class="form_control" ng-repeat="level in data.extras_onsite.levels"><Label  id="margin_{{type}}_onsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ng-repeat="level in data.extras_offsite.levels"><Label id="margin_{{type}}_offsite_{{effort.id}}_{{level.id}}"></Label></td>
+						<td class="form_control" ><Label id="{{type}}_blended_margin_{{effort.id}}"></Label></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

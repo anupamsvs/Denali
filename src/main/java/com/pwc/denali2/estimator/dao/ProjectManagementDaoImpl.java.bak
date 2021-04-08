@@ -1,0 +1,169 @@
+package com.pwc.denali2.estimator.dao;
+
+import java.util.List;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.stereotype.Repository;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.mapping.Map;
+
+import com.pwc.denali2.estimator.model.Engagement;
+import com.pwc.denali2.estimator.model.EngagementShare;
+import com.pwc.denali2.estimator.model.Engagement_share_permission;
+
+@Repository
+public class ProjectManagementDaoImpl extends AbstractDao<Integer, Engagement> implements ProjectManagementDao{
+
+	@Override
+	public void saveProject(Engagement engagement) {
+		
+		persist(engagement);
+	}
+	
+	@Override
+	public List<String> getEngagementStatusById(int engagementId) {
+		
+		String sql = "select engagement_status from engagement where id = ?";
+		
+		List<String> engagement_status = jdbcTemplate.queryForList(sql,new Object[]{engagementId},String.class);
+		
+		return engagement_status;
+	}
+	
+	public Engagement getEngagementById(int engagementId) {
+		
+		String sql = "select * from engagement where id = ?";
+		//List<String> engagement = jdbcTemplate.queryForList(sql,new Object[]{engagementId},String.class);
+		
+		Engagement Engagement = jdbcTemplate.queryForObject(sql,
+				new Object[]{engagementId},new BeanPropertyRowMapper<Engagement>(Engagement.class));
+		return Engagement;
+	}
+	
+	@Override
+	public void saveEnterPriseApplication(int engagementId,String enterPriseApplicationStringList) {
+		String[] enterPriseApplicationList= enterPriseApplicationStringList.split(",");
+		
+		for(int i = 0; i < enterPriseApplicationList.length; i++){
+			String application = enterPriseApplicationList[i];
+			String sql1 = "select id from enterprise_application where description = '"+application+"'";
+			List<String> id = jdbcTemplate.queryForList(sql1,new Object[]{},String.class);
+			String applicationId = id.get(0);
+			String sql2 = "insert into engagement_enterprise_application(engagement_id,enterprise_application_id) values ("+ engagementId +",'"+ applicationId +"')";
+			jdbcTemplate.update(sql2);
+		}
+	}
+	
+	@Override
+	public void updateEnterPriseApplication(int engagementId,String enterPriseApplicationStringList) {
+		String[] enterPriseApplicationList= enterPriseApplicationStringList.split(",");
+		
+		String sql = "delete from engagement_enterprise_application where engagement_id = "+engagementId+"";
+		jdbcTemplate.update(sql);
+		if(enterPriseApplicationList.length == 1 && enterPriseApplicationList[0].equals("")){
+		}
+		else{
+			for(int i = 0; i < enterPriseApplicationList.length; i++){
+				String application = enterPriseApplicationList[i];
+				String sql1 = "select id from enterprise_application where description = '"+application+"'";
+				List<String> id = jdbcTemplate.queryForList(sql1,new Object[]{},String.class);
+				String applicationId = id.get(0);
+				String sql2 = "insert into engagement_enterprise_application(engagement_id,enterprise_application_id) values ("+ engagementId +",'"+ applicationId +"')";
+				jdbcTemplate.update(sql2);
+			}
+		}
+	}
+
+
+	@Override
+	public List<Engagement_share_permission> listAvailableProject(String currentUserGuid,Engagement engagement) {
+		//String sql = "SELECT * FROM engagement WHERE (guid = ? OR id IN(SELECT engagement_id FROM engagement_share WHERE guid = ?)) ";
+		String sql ="SELECT engshr.release,engshr.edit,engshr.read,eng.* FROM engagement eng"+
+				" LEFT JOIN engagement_share engshr on eng.id = engshr.engagement_id and engshr.guid = ?"+
+				" WHERE (eng.guid = ? OR eng.id IN(SELECT engagement_id FROM engagement_share WHERE guid = ?))";
+						System.out.println(sql);
+		if(null != engagement){
+			if(!StringUtils.isEmpty(engagement.getClient_name())){
+				sql += " and client_name like'%" + engagement.getClient_name() + "%' ";
+			}
+			if(!StringUtils.isEmpty(engagement.getEngagement_name())){
+				sql += " and engagement_name like '%" + engagement.getEngagement_name() + "%' ";
+			}
+			if(!StringUtils.isEmpty(engagement.getEngagement_status())){
+				sql += " and engagement_status like '%" + engagement.getEngagement_status() + "%' ";
+			}
+		}
+		System.out.println(sql);
+		List<Engagement_share_permission> projectList = jdbcTemplate.query(sql, 
+				new Object[]{currentUserGuid,currentUserGuid,currentUserGuid},new BeanPropertyRowMapper<Engagement_share_permission>(Engagement_share_permission.class));
+//		System.out.println(projectList.get(0).getProjectNo());
+		
+//		String sqlSharedRes="SELECT * FROM engagement_share where guid = '"+currentUserGuid+"' and engagement_id = "+engagement.getId();
+//		
+//		List<EngagementShare> eng = jdbcTemplate.query(sqlSharedRes, new BeanPropertyRowMapper<EngagementShare>(EngagementShare.class));
+//		System.out.println(eng.get(0).getEdit());
+//		System.out.println(eng.get(0).getRelease());
+//		System.out.println(eng.get(0).getRead());
+		
+		
+		
+		return projectList;
+	}
+
+	@Override
+	public void updateProject(Engagement engagement) {
+		update(engagement);
+		
+	}
+
+	@Override
+	public List<String> getEngagementStatusList() {
+		String sql = "select description from engagement_status";
+		
+		List<String> engagementStatusList = jdbcTemplate.queryForList(sql,new Object[]{},String.class);
+		
+		return engagementStatusList;
+	}
+	
+	@Override
+	public List<String> getEnterpriseApplicationListByEngagementId(int engagementId) {
+		String sql = "select description from enterprise_application,engagement_enterprise_application where engagement_enterprise_application.engagement_id = ? and engagement_enterprise_application.enterprise_application_id = enterprise_application.id";
+		
+		List<String> enterpriseApplicationList = jdbcTemplate.queryForList(sql,new Object[]{engagementId},String.class);
+		
+		return enterpriseApplicationList;
+	}
+	
+	@Override
+	public List<String> getEnterpriseApplicationList() {
+		String sql = "select description from enterprise_application";
+		
+		List<String> enterpriseApplicationList = jdbcTemplate.queryForList(sql,new Object[]{},String.class);
+		
+		return enterpriseApplicationList;
+	}
+
+	@Override
+	public Integer checkEngagementNo(int engagementId,String project_no) {
+		// TODO Auto-generated method stub
+		String sql = "select count(*) from engagement where id = ? and parent = ? and project_no = ?";
+		Integer count = 0;
+		//List<String> engagement = jdbcTemplate.queryForList(sql,new Object[]{engagementId},String.class);
+		try{
+		 count = jdbcTemplate.queryForObject(sql,
+				new Object[]{engagementId,engagementId,project_no}, Integer.class );
+		}catch(Exception e){
+			return 0;
+		}
+		return count;
+	}
+	
+		@Override
+	public List<java.util.Map<String, Object>> getOfferingList() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT distinct id,code FROM master_admin_lovs where lower(type) ='cloud offering'";
+		
+		List<java.util.Map<String, Object>> offeringList = jdbcTemplate.queryForList(sql);
+		return offeringList;
+	}
+}
